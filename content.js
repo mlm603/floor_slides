@@ -9,6 +9,37 @@ window.addEventListener("error", (e) => {
   console.error("CONTENT SCRIPT ERROR:", e.message, e.filename, e.lineno);
 });
 
+chrome.runtime.onMessage.addListener((message) => {
+  if (message.type !== "TIMER_COMMAND") return;
+
+  if (message.command === "start_timer") {
+    nextSlide();
+    startTimer(1);
+  }
+
+  if (message.command === "switch_timer") {
+    nextSlide();
+    pauseCurrentTimer();
+
+    const nextTimer = activeTimer === 1 ? 2 : 1;
+    startTimer(nextTimer);
+  }
+
+  if (message.command === "deduct_time") {
+    nextSlide();
+
+    if (activeTimer === 1) timer1 = Math.max(0, timer1 - 3);
+    if (activeTimer === 2) timer2 = Math.max(0, timer2 - 3);
+
+    if (timer1 === 0 || timer2 === 0) {
+      stopInterval();
+      flashScreen();
+    }
+
+    renderTimers();
+  }
+});
+
 if (window.top !== window.self) {
   throw new Error("Skipping iframe");
 }

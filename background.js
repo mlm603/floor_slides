@@ -8,6 +8,17 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   }
 });
 
+chrome.commands.onCommand.addListener(async (command) => {
+  const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+
+  if (!tab?.id || !tab.url?.includes("docs.google.com/presentation")) return;
+
+  await chrome.tabs.sendMessage(tab.id, {
+    type: "TIMER_COMMAND",
+    command
+  });
+});
+
 function getPresentationId(url) {
   const match = url.match(/\/presentation\/d\/([^/]+)/);
   if (!match) throw new Error("Could not find presentation ID in URL.");

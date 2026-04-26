@@ -22,5 +22,28 @@
       "matches": ["https://docs.google.com/presentation/*"],
       "js": ["content.js"]
     }
-  ]
+  ],
+  "commands": {
+    "start_timer": {
+      "suggested_key": {
+        "default": "Alt+0",
+        "mac": "Alt+0"
+      },
+      "description": "Start timer 1 and go to next slide"
+    },
+    "switch_timer": {
+      "suggested_key": {
+        "default": "Alt+1",
+        "mac": "Alt+1"
+      },
+      "description": "Switch timer and go to next slide"
+    },
+    "deduct_time": {
+      "suggested_key": {
+        "default": "Alt+2",
+        "mac": "Alt+2"
+      },
+      "description": "Deduct 3 seconds and go to next slide"
+    }
+  }
 }
