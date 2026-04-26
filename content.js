@@ -174,6 +174,30 @@ function isTypingTarget(el) {
   );
 }
 
+function flashScreen() {
+  let flash = document.getElementById("slides-game-flash-overlay");
+
+  if (!flash) {
+    flash = document.createElement("div");
+    flash.id = "slides-game-flash-overlay";
+
+    flash.style.position = "fixed";
+    flash.style.inset = "0";
+    flash.style.zIndex = "2147483647";
+    flash.style.background = "rgba(255, 0, 0, 0.65)";
+    flash.style.pointerEvents = "none";
+
+    document.documentElement.appendChild(flash);
+  }
+
+  let visible = true;
+
+  setInterval(() => {
+    visible = !visible;
+    flash.style.display = visible ? "block" : "none";
+  }, 250);
+}
+
 window.addEventListener(
   "keydown",
   (event) => {
