@@ -198,6 +198,25 @@ function flashScreen() {
   }, 250);
 }
 
+function nextSlide() {
+  const selectors = [
+    '[aria-label="Next"]',
+    '[aria-label="Next slide"]',
+    '[data-tooltip="Next"]',
+    '[data-tooltip="Next slide"]'
+  ];
+
+  for (const selector of selectors) {
+    const btn = document.querySelector(selector);
+    if (btn) {
+      btn.click();
+      return;
+    }
+  }
+
+  console.warn("Could not find Next button");
+}
+
 window.addEventListener(
   "keydown",
   (event) => {
@@ -219,12 +238,12 @@ window.addEventListener(
     event.stopPropagation();
 
     if (isStart) {
-      nextSlide();
+      sendArrowRight();
       startTimer(1);
     }
 
     if (isSwitch) {
-      nextSlide();
+      sendArrowRight();
       pauseCurrentTimer();
 
       const nextTimer = activeTimer === 1 ? 2 : 1;
@@ -232,7 +251,7 @@ window.addEventListener(
     }
 
     if (isDeduct) {
-      nextSlide();
+      sendArrowRight();
 
       if (activeTimer === 1) timer1 = Math.max(0, timer1 - 3);
       if (activeTimer === 2) timer2 = Math.max(0, timer2 - 3);
@@ -247,3 +266,30 @@ window.addEventListener(
   },
   true
 );
+
+// chrome.runtime.onMessage.addListener((message) => {
+//   if (message.type !== "TIMER_COMMAND") return;
+
+//   if (message.command === "start_timer") {
+//     startTimer(1);
+//   }
+
+//   if (message.command === "switch_timer") {
+//     pauseCurrentTimer();
+
+//     const nextTimer = activeTimer === 1 ? 2 : 1;
+//     startTimer(nextTimer);
+//   }
+
+//   if (message.command === "deduct_time") {
+//     if (activeTimer === 1) timer1 = Math.max(0, timer1 - 3);
+//     if (activeTimer === 2) timer2 = Math.max(0, timer2 - 3);
+
+//     if (timer1 === 0 || timer2 === 0) {
+//       stopInterval();
+//       flashScreen();
+//     }
+
+//     renderTimers();
+//   }
+// });
