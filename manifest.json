@@ -1,0 +1,26 @@
+{
+  "manifest_version": 3,
+  "name": "Slides Category Shuffler + Timers",
+  "version": "0.1.0",
+  "permissions": ["identity", "activeTab", "scripting"],
+  "host_permissions": [
+    "https://docs.google.com/presentation/*",
+    "https://slides.googleapis.com/*"
+  ],
+  "oauth2": {
+    "client_id": "975390013387-1g34llptbhsovmvdrdh8avbrj5l7d5mo.apps.googleusercontent.com",
+    "scopes": ["https://www.googleapis.com/auth/presentations"]
+  },
+  "action": {
+    "default_popup": "popup.html"
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://docs.google.com/presentation/*"],
+      "js": ["content.js"]
+    }
+  ]
+}
