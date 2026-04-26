@@ -15,9 +15,36 @@ chrome.commands.onCommand.addListener(async (command) => {
 
   await chrome.tabs.sendMessage(tab.id, {
     type: "TIMER_COMMAND",
-    command
+    command,
+    advanceSlide: false
   });
+
+  await sendArrowRight(tab.id);
 });
+
+async function sendArrowRight(tabId) {
+  const target = { tabId };
+
+  await chrome.debugger.attach(target, "1.3");
+
+  await chrome.debugger.sendCommand(target, "Input.dispatchKeyEvent", {
+    type: "keyDown",
+    key: "ArrowRight",
+    code: "ArrowRight",
+    windowsVirtualKeyCode: 39,
+    nativeVirtualKeyCode: 39
+  });
+
+  await chrome.debugger.sendCommand(target, "Input.dispatchKeyEvent", {
+    type: "keyUp",
+    key: "ArrowRight",
+    code: "ArrowRight",
+    windowsVirtualKeyCode: 39,
+    nativeVirtualKeyCode: 39
+  });
+
+  await chrome.debugger.detach(target);
+}
 
 function getPresentationId(url) {
   const match = url.match(/\/presentation\/d\/([^/]+)/);
